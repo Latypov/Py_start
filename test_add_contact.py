@@ -19,6 +19,7 @@ class test_add_contact(unittest.TestCase):
         wd.get("http://localhost/addressbook/")
 
     def login(self, wd, username, password):
+        self.open_home_page(wd)
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(username)
@@ -31,6 +32,7 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_link_text("add new").click()
 
     def fill_contact_form(self, wd, contacts):
+        self.add_new_contact(wd)
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
         wd.find_element_by_name("firstname").send_keys(contacts.firstname)
@@ -44,6 +46,7 @@ class test_add_contact(unittest.TestCase):
         wd.find_element_by_name("email").clear()
         wd.find_element_by_name("email").send_keys(contacts.email)
         wd.find_element_by_name("submit").click()
+        self.return_to_home_page(wd)
 
     def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
@@ -53,20 +56,14 @@ class test_add_contact(unittest.TestCase):
 
     def test_test_add_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.add_new_contact(wd)
         self.fill_contact_form(wd, Contacts(firstname="John", lastname="Smith", mob_phone="415 706 8792", email="john.smith@gmail.com"))
-        self.return_to_home_page(wd)
         self.logout(wd)
 
     def test_test_add_empty_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
-        self.add_new_contact(wd)
         self.fill_contact_form(wd, Contacts(firstname="", lastname="", mob_phone="", email=""))
-        self.return_to_home_page(wd)
         self.logout(wd)
 
     def tearDown(self):
