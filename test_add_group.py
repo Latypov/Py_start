@@ -1,35 +1,23 @@
 # -*- coding: utf-8 -*-
-from selenium.webdriver.firefox.webdriver import WebDriver
-import unittest
+import pytest
 from group import Group
 from application import Application
 
-def is_alert_present(wd):
-    try:
-        wd.switch_to_alert().text
-        return True
-    except:
-        return False
 
-class test_add_group(unittest.TestCase):
-    def setUp(self):
-        self.app = Application()
+@pytest.fixture
+def app(request):
+    fixture = Application()
+    request.addfinalizer(fixture.destroy)
+    return fixture
 
 
-    def test_add_group(self):
-        self.app.login(username="admin", password="secret")
-        self.app.create_groups(Group(name="Group1", header="Logo", footer="Comments"))
-        self.app.logout()
+def test_add_group(app):
+    app.login(username="admin", password="secret")
+    app.create_groups(Group(name="Group1", header="Logo", footer="Comments"))
+    app.logout()
 
 
-    def test_add_empty_group(self):
-        self.app.login(username="admin", password="secret")
-        self.app.create_groups(Group(name="", header="", footer=""))
-        self.app.logout()
-
-
-    def tearDown(self):
-        self.app.destroy()
-
-if __name__ == '__main__':
-    unittest.main()
+def test_add_empty_group(app):
+    app.login(username="admin", password="secret")
+    app.create_groups(Group(name="", header="", footer=""))
+    app.logout()
