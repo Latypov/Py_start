@@ -1,7 +1,7 @@
 __author__ = 'allan'
-
 import pytest
 from fixture.application import Application
+
 
 @pytest.fixture
 def app(request):
