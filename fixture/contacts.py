@@ -38,6 +38,7 @@ class ContactHelper:
         wd.find_element_by_name("selected[]").click()
         #delete selection
         wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to_alert().accept()
         #self.failUnless(re.search(r"^Delete 1 addresses[\s\S]$", sel.get_confirmation()))
         #self.assertRegexpMatches(self.close_alert_and_get_its_text(), r"^Delete 1 addresses[\s\S]$")
         self.return_to_home_page()
