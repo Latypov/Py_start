@@ -35,7 +35,7 @@ class ContactHelper:
         wd.switch_to_alert().accept()
         self.return_to_home_page()
 
-    def type(self, field_name, text):
+    def change_field_value(self, field_name, text):
         wd = self.app.wd
         if text is not None:
             wd.find_element_by_name(field_name).click()
@@ -44,10 +44,10 @@ class ContactHelper:
 
     def fill_contact_form(self, contacts):
         wd = self.app.wd
-        self.type("firstname", contacts.firstname)
-        self.type("lastname", contacts.lastname)
-        self.type("mobile", contacts.mobile)
-        self.type("email", contacts.email)
+        self.change_field_value("firstname", contacts.firstname)
+        self.change_field_value("lastname", contacts.lastname)
+        self.change_field_value("mobile", contacts.mobile)
+        self.change_field_value("email", contacts.email)
 
     def modify_first_contact(self, new_contact_data):
         wd = self.app.wd
@@ -62,7 +62,7 @@ class ContactHelper:
 
     def return_to_home_page(self):
         wd = self.app.wd
-        if not(wd.find_element_by_link_text("home")):
+        if not (wd.find_elements_by_id("maintable")):
             wd.find_element_by_link_text("home").click()
 
     def count(self):
