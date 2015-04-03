@@ -26,10 +26,17 @@ class ContactHelper:
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
 
+    def select_contact_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
     def delete_first_contact(self):
+        self.delete_contact_by_index(0)
+
+    def delete_contact_by_index(self, index):
         wd = self.app.wd
         self.return_to_home_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         #delete selection
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         wd.switch_to_alert().accept()
@@ -51,9 +58,12 @@ class ContactHelper:
         self.change_field_value("email", contacts.email)
 
     def modify_first_contact(self, new_contact_data):
+        self.modify_contact_by_index(0)
+
+    def modify_contact_by_index(self, index, new_contact_data):
         wd = self.app.wd
         self.return_to_home_page()
-        self.select_first_contact()
+        self.select_contact_by_index(index)
         #open modification form
         wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
         self.fill_contact_form(new_contact_data)
@@ -80,7 +90,7 @@ class ContactHelper:
             self.return_to_home_page()
             self.contact_cache = []
         for element in wd.find_elements_by_css_selector('tr[name="entry"]'):
-            text = element.find_element_by_css_selector('td:nth-of-type(2)').text
             id = element.find_element_by_name("selected[]").get_attribute("value")
+            text = element.find_element_by_css_selector('td:nth-of-type(2)').text
             self.contact_cache.append(Contacts(lastname=text, id=id))
         return list(self.contact_cache)
