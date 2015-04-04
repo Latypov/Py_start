@@ -5,10 +5,10 @@ from random import randrange
 
 def test_modify_contact_name(app):
     if app.contacts.count() == 0:
-        app.contacts.create(Contacts(firstname="Test"))
+        app.contacts.create(Contacts(lastname="Test"))
     old_contacts = app.contacts.get_contact_list()
     index = randrange(len(old_contacts))
-    contact = Contacts(firstname="Samantha", lastname="Ford")
+    contact = Contacts(firstname = "Sam", lastname="Ford")
     contact.id = old_contacts[index].id
     app.contacts.modify_contact_by_index(index, contact)
     assert len(old_contacts) == app.contacts.count()

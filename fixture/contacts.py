@@ -1,5 +1,3 @@
-from model import contacts
-
 __author__ = 'allan'
 from model.contacts import Contacts
 
@@ -65,7 +63,7 @@ class ContactHelper:
         self.return_to_home_page()
         self.select_contact_by_index(index)
         #open modification form
-        wd.find_element_by_xpath("//table[@id='maintable']/tbody/tr[2]/td[8]/a/img").click()
+        wd.find_element_by_xpath("//tbody/tr/td[8]").click()
         self.fill_contact_form(new_contact_data)
         #update contact
         wd.find_element_by_name("update").click()
@@ -89,8 +87,10 @@ class ContactHelper:
             wd = self.app.wd
             self.return_to_home_page()
             self.contact_cache = []
-        for element in wd.find_elements_by_css_selector('tr[name="entry"]'):
-            id = element.find_element_by_name("selected[]").get_attribute("value")
-            text = element.find_element_by_css_selector('td:nth-of-type(2)').text
-            self.contact_cache.append(Contacts(lastname=text, id=id))
+            for row in wd.find_elements_by_name("entry"):
+                cells = row.find_elements_by_tag_name("td")
+                firstname = cells[2].text
+                lastname = cells[1].text
+                id = cells[0].find_element_by_tag_name("input").get_attribute("value")
+                self.contact_cache.append(Contacts(firstname=firstname, lastname=lastname, id=id))
         return list(self.contact_cache)
